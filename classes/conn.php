@@ -44,7 +44,7 @@ class conn {
 				// INSERT RECORD INTO `user_authority` TABLE
 			}
 		} else {
-			throw new Exception ("you are now allowed to perform this action");
+			throw new Exception ("you are not allowed to perform this action");
 		}
 
 	}
@@ -66,7 +66,7 @@ class conn {
 				// DELETE RECORD FROM `user_authority` TABLE
 			}
 		} else {
-			throw new Exception ("you are now allowed to perform this action");
+			throw new Exception ("you are not allowed to perform this action");
 		}
 	}
 }

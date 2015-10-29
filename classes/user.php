@@ -2,5 +2,5 @@
 
 class user {
 	use singleton;
-	// TOOD
+	// TODO
 }
