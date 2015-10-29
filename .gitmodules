@@ -1,0 +1,3 @@
+[submodule "lib/php-html-writer"]
+	path = lib/php-html-writer
+	url = https://github.com/ornicar/php-html-writer.git
