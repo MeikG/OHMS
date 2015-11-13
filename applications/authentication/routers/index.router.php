@@ -1,6 +1,7 @@
 <?php
-/* URL: /authentication */
+$authController = loadController('authentication', 'auth');
 
-$app->get('/', function () use ($app) {
-	// code
+$app->post('/', function () use ($app, $authController) {
+	$username = $app->request->post('username');
+	$password = $app->request->post('password');
 });
