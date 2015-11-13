@@ -1,5 +1,3 @@
 <?php
 
-class auth {
-	// code
-}
+// code
