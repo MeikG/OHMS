@@ -30,20 +30,19 @@ function authenticateUser($username, $password) {
  * @param string $username Username
  * @return string JWT
  */
-function generateToken($username) {
-	global $config;
-	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
+function generateToken($username, $www, $secret) {
 
+	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
 	$token = (new \Lcobucci\JWT\Builder())
-					->setIssuer($config->www)				// Configures the issuer (iss claim)
+					->setIssuer($www)						// Configures the issuer (iss claim)
 					->setIssuedAt(time()) 					// Configures the time that the token was issue (iat claim)
 					->setExpiration(time() + 3600) 			// Configures the expiration time of the token (exp claim)
 					->set('isLoggedIn', 1) 					// Claim the user is logged in
 					->set('username', $username)			// Claim the logged in user is $username
-					->sign($signer, $config->JWT_secret) 	// creates a signature using "testing" as key
+					->sign($signer, $secret) 				// creates a signature using "testing" as key
 					->getToken(); 							// Retrieves the generated token
 
-	return $token;
+	return (string) $token;
 }
 
 /* Validate a JWT Token
@@ -51,8 +50,7 @@ function generateToken($username) {
  * @param JSON $string JSON Web Token
  * @return bool
  */
-function validateToken($string) {
-	global $config;
+function validateToken($string, $secret) {
 	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
 
 	// If it's from a header, strip it.
@@ -60,7 +58,7 @@ function validateToken($string) {
 
 	// Verify token
 	$token = (new \Lcobucci\JWT\Parser())->parse((string) $string);
-	if ($token->verify($signer, $config->JWT_secret)) {
+	if ($token->verify($signer, $secret)) {
 		return true;
 	}
 	return false;
