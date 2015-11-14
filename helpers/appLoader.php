@@ -1,5 +1,6 @@
 <?php
 
+namespace mgregory\core;
 /* Return an instance of an app's class
  *
  * @param string @appname Name of application
@@ -24,8 +25,8 @@ function loadClass ($appname, $class) {
  * @param string @controller Name of controller
  * @return void
  */
-function loadHelper ($appname, $controller) {
-	$path = dirname(dirname(__FILE__)) . '/applications/' . $appname . '/helpers/' . $controller . '.helper.php';
+function loadController ($appname, $controller) {
+	$path = dirname(dirname(__FILE__)) . '/applications/' . $appname . '/controllers/' . $controller . '.controller.php';
 	if (file_exists($path)) {
 		require_once $path;
 	} else {
