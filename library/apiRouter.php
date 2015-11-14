@@ -1,5 +1,7 @@
 <?php
 
+namespace mgregory;
+
 // Find all applications used by this API
 $routes = glob(dirname(dirname(__FILE__)) . '/applications/*');
 
