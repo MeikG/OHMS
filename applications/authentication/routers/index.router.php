@@ -1,6 +1,12 @@
 <?php
 namespace mgregory\auth;
 
+/* POST Authentication user details for validation
+ *
+ * @param string @username POST username
+ * @param string @password POST password
+ * @return JSON
+ */
 $app->post('/', function () use ($app) {
 	global $config;
 
@@ -24,6 +30,11 @@ $app->post('/', function () use ($app) {
 	echo json_encode($return);
 });
 
+/* GET Authentication validation for JWT
+ *
+ * @header Authorization: bearer <token>
+ * @return JWT claims
+ */
 $app->get('/validate', function () use ($app) {
 	// Authenticate
 	if ($claims = \mgregory\core\isValidTokenHeader($app)) {
