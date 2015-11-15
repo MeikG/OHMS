@@ -26,8 +26,9 @@ $app->post('/', function () use ($app) {
 
 $app->get('/validate', function () use ($app) {
 	// Authenticate
-	if (\mgregory\core\isValidTokenHeader($app)) {
+	if ($claims = \mgregory\core\isValidTokenHeader($app)) {
 		$return = ['isValidToken' => true];
+		$return['claims'] = $claims;
 		$app->response->headers->set('Content-Type', 'application/json');
 		echo json_encode($return);/**/
 	}
