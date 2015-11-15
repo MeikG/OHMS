@@ -2,6 +2,7 @@
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\ValidationData;
 
 namespace mgregory\auth\controller;
 
@@ -50,16 +51,21 @@ function generateToken($username, $www, $secret) {
  * @param JSON $string JSON Web Token
  * @return bool
  */
-function validateToken($string, $secret) {
+function validateToken($string, $www, $secret) {
 	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
+
+	// Configure validation data
+	$data = new \Lcobucci\JWT\ValidationData;
+	$data->setIssuer($www);
 
 	// If it's from a header, strip it.
 	if (preg_match('/^Bearer /', $string)) $string = str_replace('Bearer ', '', $string);
 
-	// Verify token
+	// Verify token is signed and validated
 	$token = (new \Lcobucci\JWT\Parser())->parse((string) $string);
-	if ($token->verify($signer, $secret)) {
-		return true;
+	if ($token->verify($signer, $secret) && $token->validate($data)) {
+		// Return the claims made by the token
+		return $token->getClaims();
 	}
 	return false;
 }
