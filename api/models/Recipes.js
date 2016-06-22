@@ -27,5 +27,25 @@ module.exports = {
       collection: 'RecipeInstructions',
       via: 'recipe'
     }
-  }
+  },
+
+  /*
+   *  Create a new empty recipe.
+   *
+   *  @param  recipeName        {string}
+   *          recipeDescription {string}
+   *
+   *  @returns {object} The newly created recipe.
+   */
+  createRecipe(recipeName, recipeDescription, token, cb) {
+    // Retrieve the user from the JWT.
+    Tokens.getClaims(token, function (err, claims) {
+      if (err) return cb(err);
+      Recipes.create({recipeName, recipeDescription, writtenBy: claims.id}).exec(function(err, recipe) {
+        if (err) return cb(err);
+        return cb(null, recipe);
+      });
+    });
+  },
+
 };
