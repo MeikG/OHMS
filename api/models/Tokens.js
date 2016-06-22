@@ -41,5 +41,19 @@ module.exports = {
       if (err) return cb(err);
       return cb(null, token);
     });
+  },
+
+  /*
+   * Gets the claims from a JWT.
+   *
+   * @param {string} token      JSON Web Token.
+   * @returns {object} Authenticated claims made by JWT.
+   */
+  getClaims(token, cb) {
+    jwt.verify(token, sails.config.jwt.secret, function(err, decoded) {
+      if (err) return cb(err);
+      return cb(null, decoded.claims);
+    });
   }
+
 };
