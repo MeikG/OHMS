@@ -29,7 +29,6 @@ module.exports = {
     // Create a payload object to be used in the JWT.
     var payload = {
       iat: Date.now(),                  // Issued at.
-      nbf: Date.now(),                  // Not valid before.
       exp: Date.now() + validFor,       // Expires in (time).
       iss: sails.config.site.address,   // Issuer.
       aud: sails.config.jwt.audience,   // Audience.
@@ -40,6 +39,19 @@ module.exports = {
     jwt.sign(payload, sails.config.jwt.secret, { algorithm: 'HS256' }, function(err, token) {
       if (err) return cb(err);
       return cb(null, token);
+    });
+  },
+
+  /*
+   * Gets the full payload from a verified JWT.
+   *
+   * @param {string} token      JSON Web Token.
+   * @returns {object} Authenticated payload of a JWT.
+   */
+  getPayload(token, cb) {
+    jwt.verify(token, sails.config.jwt.secret, function(err, decoded) {
+      if (err) return cb(err);
+      return cb(null, decoded);
     });
   },
 
