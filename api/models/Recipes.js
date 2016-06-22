@@ -16,8 +16,8 @@ module.exports = {
     recipeName: 'string',
     recipeDescription: 'string',
     writtenBy: {
-      collection: 'Users',
-      via: 'id'
+      model: 'Users',
+      unique: true
     },
     ingredients: {
       collection: 'RecipeIngredients',
@@ -26,8 +26,6 @@ module.exports = {
     instructions: {
       collection: 'RecipeInstructions',
       via: 'recipe'
-    },
-    publicRecipe: 'boolean'
+    }
   }
 };
-

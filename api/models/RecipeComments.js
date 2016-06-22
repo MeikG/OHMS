@@ -1,7 +1,7 @@
 /**
- * InstructionInstructions.js
+ * RecipeComments.js
  *
- * @description :: Link ingredients to a recipe instruction.
+ * @description :: Comments made by users on recipes.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
@@ -13,13 +13,14 @@ module.exports = {
       unique: true,
       primaryKey: true
     },
-    instruction: {
-      model: 'RecipeInstructions'
+    recipe: {
+      model: 'Recipes',
+      unique: true
     },
-    ingredient: {
-      collection: 'RecipeIngredients',
-      via: 'id'
-    }
+    writtenBy: {
+      model: 'Users',
+      unique: true
+    },
+    comment: 'string'
   }
 };
-

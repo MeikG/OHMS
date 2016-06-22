@@ -14,11 +14,11 @@ module.exports = {
       primaryKey: true
     },
     recipe: {
-      model: 'Recipe'
+      model: 'Recipes',
+      unique: true
     },
     amount: 'int',
     measurement: 'string',
     ingredient: 'string'
   }
 };
-

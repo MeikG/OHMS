@@ -14,14 +14,14 @@ module.exports = {
       primaryKey: true
     },
     recipe: {
-      model: 'Recipe'
+      model: 'Recipes',
+      unique: true
     },
     ingredients: {
-      collection: 'InstructionIngredients',
-      via: 'ingredient'
+      collection: 'RecipeIngredients',
+      via: 'id'
     },
     time: 'int',
     description: 'string'
   }
 };
-
