@@ -34,7 +34,10 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+  'POST /user/createUser': 'Users.createUser',
+  'POST /user/validateUser': 'Users.validateUser',
+  'POST /user/updatePassword': 'Users.updatePassword',
 
   /***************************************************************************
   *                                                                          *
