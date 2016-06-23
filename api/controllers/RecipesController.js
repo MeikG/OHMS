@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var slug = require('slug');
+
 module.exports = {
   /*
    * Create a new recipe.
@@ -43,7 +45,7 @@ module.exports = {
     // Get the claims made by the token, and find all recipes with that id.
     Tokens.getClaims(token, function (err, claims) {
       if (err) return res.serverError(err);
-      var id = req.param('id') || claims.id;
+      var id = req.param('recipeid') || claims.id;
       if (id != parseInt(id)) return res.badRequest();
       Recipes.findMine(id, function (err, recipes) {
         if (err) switch (err) {
@@ -62,8 +64,10 @@ module.exports = {
    * Find a specific recipe.
    */
   findOne: function (req, res) {
-    var id = req.param('id');
+
+    var id = req.param('recipeid');
     if (id != parseInt(id)) return res.badRequest();
+
     Recipes.findRecipes(id, function (err, recipe) {
       if (err) switch (err) {
         default:
@@ -72,6 +76,8 @@ module.exports = {
           return res.notFound();
       }
       if (! recipe) return res.notFound();
+      var recipeName = req.param('recipeName');
+      if (typeof recipeName !== 'undefined' && req.param('recipeName') != slug(recipe.recipeName, '_')) return res.redirect('/recipe/' + id + '/' + slug(recipe.recipeName, '_'));
       return res.ok(recipe);
     });
   }
