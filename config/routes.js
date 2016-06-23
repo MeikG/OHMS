@@ -40,10 +40,14 @@ module.exports.routes = {
   'POST /user/updatePassword': 'Users.updatePassword',
 
   'GET /recipes': 'Recipes.find',
-  'GET /recipe/:id': 'Recipes.findOne',
+  'GET /recipe/:recipeid/:recipeName?': 'Recipes.findOne',
   'GET /recipes/mine': 'Recipes.findByUser',
-  'GET /recipes/byUser/:id': 'Recipes.findByUser',
+  'GET /recipes/byUser/:userid': 'Recipes.findByUser',
   'POST /recipes/createRecipe': 'Recipes.createRecipe',
+
+  'GET /ingredient/:ingredientid': 'RecipeIngredients.findOne',
+  'POST /ingredients/createIngredient': 'RecipeIngredients.createIngredient',
+  'PUT /ingredient/:ingredientid': 'RecipeIngredients.editIngredient',
 
   /***************************************************************************
   *                                                                          *
