@@ -31,9 +31,9 @@ module.exports = {
   /*
    *  Create a new empty recipe.
    *
-   *  @param  recipeName        {string}
-   *          recipeDescription {string}
-   *
+   *  @param {string} recipeName
+   *  @param {string} recipeDescription
+   *  @param {string} jwt token
    *  @returns {object} The newly created recipe.
    */
   createRecipe(recipeName, recipeDescription, token, cb) {
@@ -63,6 +63,8 @@ module.exports = {
 
     Recipes.find(search)
     .populate('writtenBy')
+    .populate('ingredients')
+    .populate('instructions')
     .exec(function (err, recipes) {
       if (err) return cb(err);
       recipes.forEach(function (recipe) {
@@ -85,6 +87,8 @@ module.exports = {
   findMine(id, cb) {
     Recipes.find({writtenBy: id})
     .populate('writtenBy')
+    .populate('ingredients')
+    .populate('instructions')
     .exec(function (err, recipes) {
       if (err) return cb(err);
       recipes.forEach(function (recipe) {
