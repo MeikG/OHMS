@@ -39,6 +39,12 @@ module.exports.routes = {
   'POST /user/validateUser': 'Users.validateUser',
   'POST /user/updatePassword': 'Users.updatePassword',
 
+  'GET /recipes': 'Recipes.find',
+  'GET /recipe/:id': 'Recipes.findOne',
+  'GET /recipes/mine': 'Recipes.findByUser',
+  'GET /recipes/byUser/:id': 'Recipes.findByUser',
+  'POST /recipes/createRecipe': 'Recipes.createRecipe',
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
