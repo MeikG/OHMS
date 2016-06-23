@@ -28,15 +28,24 @@ module.exports = {
    *  @param {int} amount
    *  @param {string} measurement
    *  @param {string} name of ingredient
+   *  @param {string} jwt token
    *  @returns {object} Recipe Ingredient
    */
-  createIngredient: function (id, amount, measurement, name, cb) {
-    Recipes.findOne({id}).exec(function (err, exists) {
-      if (err) return cb(err);
-      if (! exists) return cb(404);
-      RecipeIngredients.create({recipe: id, amount, measurement, name}).exec(function (err, ingredient) {
+  createIngredient: function (id, amount, measurement, name, token, cb) {
+    Tokens.getClaims(token, function (err, claims) {
+      Recipes.findOne({id})
+      .exec(function (err, record) {
         if (err) return cb(err);
-        return cb(null, ingredient);
+        // If the user did not write the recipe, fail to add the ingredient.
+        if (record.writtenBy !== claims.id) return cb(null, null);
+        Recipes.findOne({id}).exec(function (err, exists) {
+          if (err) return cb(err);
+          if (! exists) return cb(null, null);
+          RecipeIngredients.create({recipe: id, amount, measurement, name}).exec(function (err, ingredient) {
+            if (err) return cb(err);
+            return cb(null, ingredient);
+          });
+        });
       });
     });
   },
@@ -46,13 +55,25 @@ module.exports = {
    *
    *  @param {int} id
    *  @param {object} ingredient
+   *  @param {string} jwt token
    *  @returns {object} updated ingredient.
    */
-  editIngredient: function (id, ingredient, cb) {
-    RecipeIngredients.update({id}, ingredient)
-    .exec(function (err, updatedIngredient) {
+  editIngredient: function (id, ingredient, token, cb) {
+    // Grab the token claims.
+    Tokens.getClaims(token, function (err, claims) {
       if (err) return cb(err);
-      return cb(null, updatedIngredient);
+      RecipeIngredients.findOne({id})
+      .populate('recipe')
+      .exec(function (err, record) {
+        if (err) return cb(err);
+        // Compare against the recipe writer.
+        if (record.recipe.writtenBy !== claims.id) return cb(null, null);
+        RecipeIngredients.update({id}, ingredient)
+        .exec(function (err, updatedIngredient) {
+          if (err) return cb(err);
+          return cb(null, updatedIngredient);
+        });
+      });
     });
   }
 };
